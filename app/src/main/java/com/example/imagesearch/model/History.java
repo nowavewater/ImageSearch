@@ -1,6 +1,7 @@
 package com.example.imagesearch.model;
 
 import android.database.Cursor;
+import android.widget.Toast;
 
 import com.activeandroid.Cache;
 import com.activeandroid.Model;
@@ -64,25 +65,23 @@ public class History extends Model {
     public static void saveHistory(String text) {
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-dd-MM HH:mm:ss", Locale.getDefault());
-        History history = new History(text, dateFormat.format(calendar.getTime()));
+        History history = new History(text.toLowerCase(), dateFormat.format(calendar.getTime()));
         history.save();
     }
 
     // Get search suggestions
     public static List<String> getSuggestion(String query) {
         List<History> queryResults = new Select()
+                .distinct()
                 .from(History.class)
                 .where("text LIKE ?", "%"+ query + "%")
+                .limit(Constants.SUGGESTION_TOTAL)
+                .groupBy("text")
                 .execute();
-        Set<String> resultHash = new HashSet<String>();
-        int total = Constants.SUGGESTION_TOTAL;
-        for (History history:queryResults){
-            if (resultHash.size()>=total)
-                break;
-            resultHash.add(history.getText().toLowerCase());
-        }
         List<String> results = new ArrayList<>();
-        results.addAll(resultHash);
+        for (History history:queryResults){
+            results.add(history.getText());
+        }
         return results;
     }
 

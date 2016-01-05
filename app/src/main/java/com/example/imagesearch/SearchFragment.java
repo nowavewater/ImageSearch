@@ -49,7 +49,7 @@ import retrofit.Retrofit;
 public class SearchFragment extends Fragment {
 
     private static final String BASE_URL = "https://api.flickr.com";
-    private static final String API_KEY = "Replace your API key";
+    private static final String API_KEY = "a0f9674a3ed89fdf5e109f5f35394b4c";
 
     private List<Photo> photoList;
     private FlickrService service;
@@ -370,9 +370,12 @@ public class SearchFragment extends Fragment {
         // Create a matrixcursor, add suggtion strings into cursor
         final MatrixCursor c = new MatrixCursor(new String[]{ BaseColumns._ID,  SearchManager.SUGGEST_COLUMN_TEXT_1 });
         List<String> suggestions = History.getSuggestion(query);
+        String str = "";
         for (int i=0;i<suggestions.size();i++){
             c.addRow(new Object[] {i, suggestions.get(i)});
+            str += suggestions.get(i);
         }
+        Toast.makeText(context, str,Toast.LENGTH_SHORT).show();
         mAdapter.changeCursor(c);
     }
 
