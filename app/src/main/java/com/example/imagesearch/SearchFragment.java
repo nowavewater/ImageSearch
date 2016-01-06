@@ -49,7 +49,7 @@ import retrofit.Retrofit;
 public class SearchFragment extends Fragment {
 
     private static final String BASE_URL = "https://api.flickr.com";
-    private static final String API_KEY = "a0f9674a3ed89fdf5e109f5f35394b4c";
+    private static final String API_KEY = "Replace your key here";
 
     private List<Photo> photoList;
     private FlickrService service;
